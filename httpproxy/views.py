@@ -38,6 +38,17 @@ class HttpProxy(View):
     The base URL that the proxy should forward requests to.
     """
 
+    add_slash = True
+    """
+    Add slash in url if it is not in the url in the beginning.
+
+    If need use proxy for all urls. Set add_slash = False
+
+    urlpatterns += patterns('',
+        (r'^(?P<url>.*)$', HttpProxy.as_view(base_url='http://www.python.org/')),
+    )
+    """
+
     mode = None
     """
     The mode that the proxy should run in. Available modes are ``record`` and
@@ -94,7 +105,7 @@ class HttpProxy(View):
         This way, any further processing of the proxy'd request can just ignore
         the url given to the proxy and use request.path safely instead.
         """
-        if not self.url.startswith('/'):
+        if not self.url.startswith('/') and self.add_slash:
             self.url = '/' + self.url
         request.path = self.url
         request.path_info = self.url
