@@ -94,7 +94,7 @@ class HttpProxy(View):
         This way, any further processing of the proxy'd request can just ignore
         the url given to the proxy and use request.path safely instead.
         """
-        if not self.url.startswith('/'):
+        if self.base_url and not self.url.startswith('/'):
             self.url = '/' + self.url
         request.path = self.url
         request.path_info = self.url
