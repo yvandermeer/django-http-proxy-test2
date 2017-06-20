@@ -12,7 +12,7 @@ from httpproxy.recorder import ProxyRecorder
 logger = logging.getLogger(__name__)
 
 
-REWRITE_REGEX = re.compile(r'((?:src|action|href)=["\'])/(?!\/)')
+REWRITE_REGEX = re.compile(br'((?:src|action|href)=["\'])/(?!\/)')
 
 class HttpProxy(View):
     """
