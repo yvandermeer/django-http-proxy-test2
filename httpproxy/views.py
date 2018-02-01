@@ -4,9 +4,11 @@ import re
 
 from django.http import HttpResponse
 from django.utils.six.moves import urllib
+from django.utils.http import urlquote
 from django.views.generic import View
 
 from httpproxy.recorder import ProxyRecorder
+from httpproxy.utils import encode_partial_urls
 
 
 logger = logging.getLogger(__name__)
@@ -69,7 +71,8 @@ class HttpProxy(View):
     _msg = 'Response body: \n%s'
 
     def dispatch(self, request, url, *args, **kwargs):
-        self.url = url
+        self.url = urlquote(url)
+
         self.original_request_path = request.path
         request = self.normalize_request(request)
         if self.mode == 'play':
@@ -79,11 +82,13 @@ class HttpProxy(View):
                 response = self.rewrite_response(request, response)
             return response
 
+
         response = super(HttpProxy, self).dispatch(request, *args, **kwargs)
         if self.mode == 'record':
             self.record(response)
         if self.rewrite:
             response = self.rewrite_response(request, response)
+
         return response
 
     def normalize_request(self, request):
@@ -150,6 +155,9 @@ class HttpProxy(View):
         """
         Constructs the full URL to be requested.
         """
+
+        if 'http' in url:
+            url = encode_partial_urls(url)
         param_str = self.request.GET.urlencode()
         request_url = u'%s%s' % (self.base_url, url)
         request_url += '?%s' % param_str if param_str else ''
