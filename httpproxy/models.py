@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.six.moves import urllib
+from six.moves import urllib
 from django.utils.translation import ugettext as _
 
 
