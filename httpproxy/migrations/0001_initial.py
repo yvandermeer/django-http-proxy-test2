@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('order', models.PositiveSmallIntegerField(default=1)),
                 ('name', models.CharField(max_length=100, verbose_name='naam')),
                 ('value', models.CharField(max_length=250, null=True, verbose_name='value', blank=True)),
-                ('request', models.ForeignKey(related_name='parameters', verbose_name='request', to='httpproxy.Request')),
+                ('request', models.ForeignKey(related_name='parameters', verbose_name='request', to='httpproxy.Request', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('order',),
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('status', models.PositiveSmallIntegerField(default=200)),
                 ('content_type', models.CharField(max_length=200, verbose_name='inhoudstype')),
                 ('content', models.TextField(verbose_name='inhoud')),
-                ('request', models.OneToOneField(verbose_name='request', to='httpproxy.Request')),
+                ('request', models.OneToOneField(verbose_name='request', to='httpproxy.Request', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'response',
