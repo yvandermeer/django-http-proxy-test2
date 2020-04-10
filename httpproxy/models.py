@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.six.moves import urllib
+from six.moves import urllib
 from django.utils.translation import ugettext as _
 
 
@@ -68,7 +68,7 @@ class RequestParameter(models.Model):
         ('G', 'GET'),
         ('P', 'POST'),
     )
-    request = models.ForeignKey(Request, verbose_name=_('request'), related_name='parameters')
+    request = models.ForeignKey(Request, verbose_name=_('request'), related_name='parameters', on_delete=models.CASCADE)
     type = models.CharField(max_length=1, choices=REQUEST_TYPES, default='G')
     order = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(_('name'), max_length=100)
@@ -89,7 +89,7 @@ class Response(models.Model):
     The response that was recorded in response to the corresponding
     :class:`~httpproxy.models.Request`.
     """
-    request = models.OneToOneField(Request, verbose_name=_('request'))
+    request = models.OneToOneField(Request, verbose_name=_('request'), on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(default=200)
     content_type = models.CharField(_('content type'), max_length=200)
     content = models.TextField(_('content'))
