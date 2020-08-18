@@ -89,7 +89,7 @@ class Response(models.Model):
     The response that was recorded in response to the corresponding
     :class:`~httpproxy.models.Request`.
     """
-    request = models.OneToOneField(Request, verbose_name=_('request'))
+    request = models.OneToOneField(Request, verbose_name=_('request'), on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(default=200)
     content_type = models.CharField(_('content type'), max_length=200)
     content = models.TextField(_('content'))
